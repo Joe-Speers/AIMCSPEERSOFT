@@ -136,7 +136,7 @@ public class Decode
     //reading
     int GetType()
     {
-        if (code[i] == '<')
+        if (code[i] == '^')
         {
             return 1;//int
         }
@@ -314,6 +314,61 @@ public class Decode
         {
             i++;
             return true;
+        }
+        if (c == '>')
+        {
+            i++;
+            int v1 = readI();
+            i++;
+            int v2 = readI();
+            if (v1 > v2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        if (c == '<')
+        {
+            i++;
+            int v1 = readI();
+            i++;
+            int v2 = readI();
+            if (v1 < v2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        if (c == '<')
+        {
+            i++;
+            switch (GetType()) {
+                case 1:
+                    int I1 = readI();
+                    i++;
+                    int I2 = readI();
+                    if (I1 == I2) return true;
+                    else return false;
+                case 2:
+                    string S1 = readS();
+                    i++;
+                    string S2 = readS();
+                    if (S1 == S2) return true;
+                    else return false;
+                case 3:
+                    bool B1 = readB();
+                    i++;
+                    bool B2 = readB();
+                    if (B1 == B2) return true;
+                    else return false;
+            }
+
         }
         return false;
     }
