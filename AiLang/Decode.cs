@@ -64,7 +64,40 @@ public class Decode
                 continue;
 
             }
-            //loops
+            //loops#
+            //while
+            if (c == '{')
+            {
+                i++;
+                i++;
+                int start = i;
+                while (true)
+                {
+                    if (readB())
+                    {
+                        i = i + 2;
+                        instruct();
+                        i = start;
+                        continue;
+                    }
+                    else
+                    {
+                        while (code[i] != '}')
+                        {
+                            i++;
+                        }
+                        i = i + 2;
+                        break;
+                    }
+                }
+                continue;
+            }
+            if (c == '}')
+            {
+                i++;
+                return;
+            }
+            //if
             if (c == '[')
             {
                 i++;
@@ -87,8 +120,8 @@ public class Decode
                         if (code[i] == '[' && code[i + 1] != '(')
                         {
                             instruct();
-                            continue;
                         }
+                        continue;
                     }
                 }
                 else
@@ -106,6 +139,7 @@ public class Decode
                 i++;
                 return;
             }
+
         }
     }
 
@@ -315,12 +349,43 @@ public class Decode
             i++;
             return true;
         }
+        if (c == '-')
+        {
+            i++;
+            if (readB())
+            {
+                i++;
+                return false;
+            }
+            else
+            {
+                i++;
+                return true;
+            }
+        }
+        if (c == '|')
+        {
+            i++;
+            bool v1 = readB();
+            i++;
+            bool v2 = readB();
+            i++;
+            if (v1||v2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         if (c == '>')
         {
             i++;
             int v1 = readI();
             i++;
             int v2 = readI();
+            i++;
             if (v1 > v2)
             {
                 return true;
@@ -336,6 +401,7 @@ public class Decode
             int v1 = readI();
             i++;
             int v2 = readI();
+            i++;
             if (v1 < v2)
             {
                 return true;
@@ -345,7 +411,7 @@ public class Decode
                 return false;
             }
         }
-        if (c == '<')
+        if (c == '=')
         {
             i++;
             switch (GetType()) {
@@ -353,18 +419,21 @@ public class Decode
                     int I1 = readI();
                     i++;
                     int I2 = readI();
+                    i++;
                     if (I1 == I2) return true;
                     else return false;
                 case 2:
                     string S1 = readS();
                     i++;
                     string S2 = readS();
+                    i++;
                     if (S1 == S2) return true;
                     else return false;
                 case 3:
                     bool B1 = readB();
                     i++;
                     bool B2 = readB();
+                    i++;
                     if (B1 == B2) return true;
                     else return false;
             }
